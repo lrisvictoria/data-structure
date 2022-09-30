@@ -324,10 +324,10 @@ const char* strchr(const char* str, int character);
 //每个递归的变量看做O(1)
 
 //斐波那契数列递归算法的空间复杂度
-long long Fibonacci(size_t N)
-{
-	return N < 2 ? N : Fibonacci(N - 1) + Fibonacci(N - 2);
-}
+//long long Fibonacci(size_t N)
+//{
+//	return N < 2 ? N : Fibonacci(N - 1) + Fibonacci(N - 2);
+//}
 //O(N)
 //空间是可以重复利用的，不累计的
 //时间是一去不复返的，累计的
@@ -339,3 +339,29 @@ long long Fibonacci(size_t N)
 //使用的是同一块空间，空间重复使用了
 
 //递归是一条路递归完了回去递归另外一条路
+
+#include <stdio.h>
+void bubbleSort(int arr[], int sz)
+{
+	for (int i = 0; i < sz - 1; i++)
+	{
+		int count = 0;
+		for (int j = 0; j < sz - i - 1; j++)
+		{
+			if (arr[j] > arr[j + 1])
+			{
+				count++;
+				int tmp = arr[j];
+				arr[j] = arr[j + 1];
+				arr[j + 1] = tmp;
+			}
+		}
+		printf("%d\n", count);
+	}
+}
+int main()
+{
+	int arr[] = { 9,8,7,6,5,4,3,2,1,0 };
+	int sz = sizeof(arr) / sizeof(arr[0]);
+	bubbleSort(arr, sz);
+}
