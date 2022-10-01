@@ -87,12 +87,15 @@ int main()
 	ListInitiate(&s);
 	show();
 	getch();
+	
 	ListInsert(&s, 0 , 11);
 	show();
 	getch();
+	
 	ListInsert(&s, 0, 5);
 	show();
 	getch();
+	
 	ListInsert(&s, 0, 7);
 	show();
 	getch();
