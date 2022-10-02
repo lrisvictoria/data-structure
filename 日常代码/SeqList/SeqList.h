@@ -35,6 +35,7 @@ void SeqListDestory(SL* ps);// 销毁
 // ...
 
 // 找到了返回x位置下标，没有没到返回-1
-int SeqListFind(SL* ps, SLDataType x);
+int SeqListFind(SL* ps, SLDataType x);// 查找
 void SeqListInsert(SL* ps, int pos, SLDataType x);// 指定下标位置插入
 void SeqListErase(SL* ps, int pos);// 删除pos位置的数据
+void SeqListModify(SL* ps, int pos, int x);// 修改pos位置的数据

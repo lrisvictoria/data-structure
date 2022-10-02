@@ -30,24 +30,50 @@
 // 再把tmp数组的值拷贝回去
 // 时间复杂度：O(N) 空间复杂度：O(N)
 
+//int removeElement(int* nums, int numsSize, int val)
+//{
+//    if (!numsSize)
+//    {
+//        return 0;
+//    }
+//
+//    int newArr[numsSize];
+//    int count = 0;
+//    // 存入数据
+//    for (int i = 0; i < numsSize; i++)
+//    {
+//        if (nums[i] != val)
+//        {
+//            newArr[count++] = nums[i];
+//        }
+//    }
+//    // 改数据
+//    for (int i = 0; i < count; i++)
+//    {
+//        nums[i] = newArr[i];
+//    }
+//
+//    return count;
+//}
+
 
 // 能否将空间复杂度优化到O(1)？
+// 思路3：双指针
+// src查找!=val的数，找到了就把数据覆盖到dest处，src++，dest++
+// 找到==val的数，src++，dest不动
+// 直到src >= numsSize
 
-int removeElement(int* nums, int numsSize, int val)
-{
-    int src = 0, dest = 0;
-    while (src < numsSize)
-    {
-        if (nums[src] != val)
-        {
-            nums[dest] = nums[src];
-            dest++;
-            src++;
-        }
-        else
-        {
-            src++;
-        }
-    }
-    return dest;
-}
+//int removeElement(int* nums, int numsSize, int val)
+//{
+//    int dest = 0, src = 0;
+//    while (src < numsSize)
+//    {
+//        if (nums[src] != val)
+//        {
+//            nums[dest] = nums[src];
+//            dest++;
+//        }
+//        src++;
+//    }
+//    return dest;
+//}
