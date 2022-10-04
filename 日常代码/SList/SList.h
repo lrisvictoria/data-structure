@@ -37,7 +37,10 @@ void SListInsert(SLTNode** pphead, SLTNode* pos, SLTDateType x);
 void SListInsertAfter(SLTNode* pos, SLTDateType x);
 
 // 在指定位置删除一个节点
-void SListErase(SLTNode** phead, SLTNode* pos, SLTDateType x);
+void SListErase(SLTNode** pphead, SLTNode* pos);
+
+// 删除指定pos位置后的一个节点
+void SListEraseAfter(SLTNode** pphead, SLTNode* pos);
 
 // 销毁
 void SListDestory(SLTNode** pphead);

@@ -32,6 +32,7 @@ void SListPrint(SLTNode* phead)
 // 尾插
 void SListPushBack(SLTNode** pphead, SLTDateType x)
 {
+	assert(pphead);// pphead是plist的地址，肯定不为空，防止参数传错
 	// 建立新节点
 	SLTNode* newnode = BuyListNode(x);
 
@@ -56,6 +57,8 @@ void SListPushBack(SLTNode** pphead, SLTDateType x)
 // 头插
 void SListPushFront(SLTNode** pphead, SLTDateType x)
 {
+	assert(pphead);
+
 	SLTNode* newnode = BuyListNode(x);
 
 	newnode->next = *pphead;// 新节点链接之前plist的地址
@@ -65,6 +68,8 @@ void SListPushFront(SLTNode** pphead, SLTDateType x)
 // 尾删
 void SListPopBack(SLTNode** pphead)
 {
+	assert(pphead);
+
 	// 温柔处理
 	/*if (*pphead == NULL)
 	{
@@ -111,8 +116,11 @@ void SListPopBack(SLTNode** pphead)
 	//tail->next = NULL;// 最后一个节点置空
 }
 
+// 头删
 void SListPopFront(SLTNode** pphead)
 {
+	assert(pphead);
+
 	// 处理空链表
 	assert(*pphead);
 	
@@ -143,6 +151,8 @@ SLTNode* SListFind(SLTNode* phead, SLTDateType x)
 // 在pos位置之前插入节点
 void SListInsert(SLTNode** pphead, SLTNode* pos, SLTDateType x)
 {
+	assert(pphead);
+	assert(pos);
 	SLTNode* newnode = BuyListNode(x);
 	// 头插情况特殊处理
 	if (*pphead == pos)
@@ -166,8 +176,68 @@ void SListInsert(SLTNode** pphead, SLTNode* pos, SLTDateType x)
 }
 
 // pos不太适合在节点前插入，适合在节点后插入
-// 在pos的后面插入
-//void SListInsertAfter(SLTNode* pos, SLTDateType x)
-//{
-//
-//}
+// 在pos后面 插入节点
+
+void SListInsertAfter(SLTNode* pos, SLTDateType x)
+{
+	assert(pos);
+
+	SLTNode* newnode = BuyListNode(x);
+	newnode->next = pos->next;
+	pos->next = newnode; 
+}
+
+// 删除pos位置的节点
+void SListErase(SLTNode** pphead, SLTNode* pos)
+{
+	assert(pphead);
+	assert(pos);
+
+	// 处理头删
+	if (*pphead == pos)
+	{
+		*pphead = pos->next;
+		free(pos);
+		// 直接调用头删
+		// SListPopFront(pos);
+	}
+	// 处理其他情况
+	else
+	{
+		SLTNode* prev = *pphead;
+		while (prev->next != pos)
+		{
+			prev = prev->next;
+		}
+		prev->next = pos->next;
+		free(pos);
+		pos = NULL;
+	}
+}
+
+// 删除指定pos位置后的一个节点
+void SListEraseAfter(SLTNode** pphead, SLTNode* pos)
+{
+	assert(pos);
+
+	assert(pos->next);// 删除的不能是尾结点后面的位置
+	SLTNode* next = pos->next;// 拷贝pos的下一个节点
+	pos->next = next->next;// 将pos的next变为下一个节点的next
+	free(next);// 释放之前pos的下一个节点
+	next = NULL;
+}
+
+void SListDestory(SLTNode** pphead)
+{
+	assert(pphead);
+	
+	SLTNode* cur = *pphead;
+	while (cur)
+	{
+		SLTNode* next = cur->next;
+		free(cur);
+		cur = next;
+	}
+
+	*pphead = NULL;
+}
