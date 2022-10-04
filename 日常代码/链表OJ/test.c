@@ -144,14 +144,37 @@
 // 思路2：快慢指针
 // 快指针走一步，满指针走两步，根据奇偶来控制结束条件，最后返回慢指针节点
 
-struct ListNode* middleNode(struct ListNode* head)
-{
-    struct ListNode* fast = head, * slow = head;
+//struct ListNode* middleNode(struct ListNode* head)
+//{
+//    struct ListNode* fast = head, * slow = head;
+//
+//    while (fast && fast->next)// 空或者下一个节点为空
+//    {
+//        slow = slow->next;
+//        fast = fast->next->next;
+//    }
+//    return slow;
+//}
 
-    while (fast && fast->next)// 空或者下一个节点为空
+// 链表中倒数第k个结点
+
+struct ListNode* FindKthToTail(struct ListNode* pListHead, int k)
+{
+    struct ListNode* cur, * ans;
+    cur = ans = pListHead;
+    int len = 0;
+
+    while (cur)
     {
-        slow = slow->next;
-        fast = fast->next->next;
+        cur = cur->next;
+        len++;
     }
-    return slow;
+    if (k <= 0 || k > len)
+        return NULL;
+
+    for (int i = 0; i < len - k; i++)
+    {
+        ans = ans->next;
+    }
+    return ans;
 }
