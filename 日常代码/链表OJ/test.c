@@ -158,23 +158,274 @@
 
 // 链表中倒数第k个结点
 
-struct ListNode* FindKthToTail(struct ListNode* pListHead, int k)
-{
-    struct ListNode* cur, * ans;
-    cur = ans = pListHead;
-    int len = 0;
+// 思路1：直接法
+//struct ListNode* FindKthToTail(struct ListNode* pListHead, int k)
+//{
+//    struct ListNode* cur, * ans;
+//    cur = ans = pListHead;
+//    int len = 0;
+//
+//    while (cur)
+//    {
+//        cur = cur->next;
+//        len++;
+//    }
+//    if (k <= 0 || k > len)
+//        return NULL;
+//
+//    for (int i = 0; i < len - k; i++)
+//    {
+//        ans = ans->next;
+//    }
+//    return ans;
+//}
 
-    while (cur)
-    {
-        cur = cur->next;
-        len++;
-    }
-    if (k <= 0 || k > len)
-        return NULL;
+/**
+ * struct ListNode {
+ *	int val;
+ *	struct ListNode *next;
+ * };
+ */
 
-    for (int i = 0; i < len - k; i++)
+ /**
+  *
+  * @param pListHead ListNode类
+  * @param k int整型
+  * @return ListNode类
+  */
+
+// 思路2：快慢指针
+//struct ListNode* FindKthToTail(struct ListNode* pListHead, int k)
+//{
+//    struct ListNode* fast, * slow;
+//    fast = slow = pListHead;
+//
+//    while (k--)
+//    {
+//        if (fast == NULL)
+//        {
+//            return NULL;
+//        }
+//        fast = fast->next;
+//    }
+//
+//    while (fast)
+//    {
+//        slow = slow->next;
+//        fast = fast->next;
+//    }
+//    return slow;
+//}
+
+// 21. 合并两个有序链表
+
+// 思路1：创建新链表，合并，无节点时需要判断
+
+//struct ListNode* mergeTwoLists(struct ListNode* list1, struct ListNode* list2)
+//{
+//    struct ListNode* head = NULL, * tail = NULL;
+//
+//    if (list1 == NULL && list2)
+//    {
+//        return list2;
+//    }
+//
+//    if (list2 == NULL && list1)
+//    {
+//        return list1;
+//    }
+//
+//    while (list1 && list2)
+//    {
+//        if (list1->val < list2->val)
+//        {
+//            if (head == NULL)
+//            {
+//                head = tail = list1;
+//            }
+//            else
+//            {
+//                // 当前结点(链表的尾链接到list1)
+//                tail->next = list1;
+//                // 链表的尾变成list1
+//                tail = list1;
+//            }
+//            list1 = list1->next;
+//        }
+//        else
+//        {
+//            if (head == NULL)
+//            {
+//                head = tail = list2;
+//            }
+//            else
+//            {
+//                tail->next = list2;
+//                tail = list2;
+//            }
+//            list2 = list2->next;
+//        }
+//    }
+//
+//    if (list1)
+//    {
+//        tail->next = list1;
+//    }
+//    if (list2)
+//    {
+//        tail->next = list2;
+//    }
+//    return head;
+//}
+
+// 思路2：创建新链表，给定节点，然后循环中无需判断
+
+//struct ListNode* mergeTwoLists(struct ListNode* list1, struct ListNode* list2)
+//{
+//    struct ListNode* head = NULL, * tail = NULL;
+//
+//    if (list1 == NULL)
+//    {
+//        return list2;
+//    }
+//
+//    if (list2 == NULL)
+//    {
+//        return list1;
+//    }
+//
+//    if (list1->val < list2->val)
+//    {
+//        head = tail = list1;
+//        list1 = list1->next;
+//    }
+//    else
+//    {
+//        head = tail = list2;
+//        list2 = list2->next;
+//    }
+//
+//    while (list1 && list2)
+//    {
+//        if (list1->val < list2->val)
+//        {
+//            // 当前结点(链表的尾链接到list1)
+//            tail->next = list1;
+//            // 链表的尾变成list1
+//            tail = list1;
+//            list1 = list1->next;
+//        }
+//        else
+//        {
+//            tail->next = list2;
+//            tail = list2;
+//            list2 = list2->next;
+//        }
+//    }
+//
+//    if (list1)
+//    {
+//        tail->next = list1;
+//    }
+//    if (list2)
+//    {
+//        tail->next = list2;
+//    }
+//    return head;
+//}
+
+// 思路3：给定哨兵位，无需考虑尾插，最后拷贝哨兵位的next
+// 释放哨兵位，返回结点
+
+//struct ListNode* mergeTwoLists(struct ListNode* list1, struct ListNode* list2)
+//{
+//    struct ListNode* head = NULL, * tail = NULL;
+//
+//    if (list1 == NULL)
+//    {
+//        return list2;
+//    }
+//
+//    if (list2 == NULL)
+//    {
+//        return list1;
+//    }
+//
+//
+//    head = tail = (struct ListNode*)malloc(sizeof(struct ListNode));
+//
+//    while (list1 && list2)
+//    {
+//        if (list1->val < list2->val)
+//        {
+//            // 当前结点(链表的尾链接到list1)
+//            tail->next = list1;
+//            // 链表的尾变成list1
+//            tail = list1;
+//            list1 = list1->next;
+//        }
+//        else
+//        {
+//            tail->next = list2;
+//            tail = list2;
+//            list2 = list2->next;
+//        }
+//    }
+//
+//    if (list1)
+//    {
+//        tail->next = list1;
+//    }
+//    if (list2)
+//    {
+//        tail->next = list2;
+//    }
+//
+//    struct ListNode* ans = head->next;
+//    free(head);
+//
+//    return ans;
+//}
+
+// CM11 链表分割
+
+// 思路：创建两个链表，一个为小于k，一个>=k，建立哨兵位
+// 然后将元素放置于对应链表中
+// 链接两个链表，并且将链表的尾部的next适当处理
+// 释放哨兵位，返回正确结点
+
+class Partition {
+public:
+    ListNode* partition(ListNode* pHead, int x)
     {
-        ans = ans->next;
+        struct ListNode* lessTail, * lessHead, * greaterTail, * greaterHead;
+        // 建立哨兵位
+        lessTail = lessHead = (struct ListNode*)malloc(sizeof(struct ListNode));
+        greaterTail = greaterHead = (struct ListNode*)malloc(sizeof(struct ListNode));
+
+        struct ListNode* cur = pHead;
+
+        while (cur)
+        {
+            if (cur->val < x)
+            {
+                lessTail->next = cur;
+                lessTail = cur;
+            }
+            else
+            {
+                greaterTail->next = cur;
+                greaterTail = cur;
+            }
+            cur = cur->next;
+        }
+        lessTail->next = greaterHead->next;
+        greaterTail->next = NULL;
+
+        struct ListNode* ans = lessHead->next;
+        free(lessHead);
+        free(greaterHead);
+        return ans;
+
     }
-    return ans;
-}
+};
