@@ -394,38 +394,173 @@
 // 链接两个链表，并且将链表的尾部的next适当处理
 // 释放哨兵位，返回正确结点
 
-class Partition {
-public:
-    ListNode* partition(ListNode* pHead, int x)
+//class Partition {
+//public:
+//    ListNode* partition(ListNode* pHead, int x)
+//    {
+//        struct ListNode* lessTail, * lessHead, * greaterTail, * greaterHead;
+//        // 建立哨兵位
+//        lessTail = lessHead = (struct ListNode*)malloc(sizeof(struct ListNode));
+//        greaterTail = greaterHead = (struct ListNode*)malloc(sizeof(struct ListNode));
+//
+//        struct ListNode* cur = pHead;
+//
+//        while (cur)
+//        {
+//            if (cur->val < x)
+//            {
+//                lessTail->next = cur;
+//                lessTail = cur;
+//            }
+//            else
+//            {
+//                greaterTail->next = cur;
+//                greaterTail = cur;
+//            }
+//            cur = cur->next;
+//        }
+//        lessTail->next = greaterHead->next;
+//        greaterTail->next = NULL;
+//
+//        struct ListNode* ans = lessHead->next;
+//        free(lessHead);
+//        free(greaterHead);
+//        return ans;
+//
+//    }
+//};
+
+// OR36 链表的回文结构
+
+//struct ListNode* middleNode(struct ListNode* head)
+//{
+//    struct ListNode* fast, * slow;
+//    fast = slow = head;
+//
+//    while (fast && fast->next)
+//    {
+//        slow = slow->next;
+//        fast = fast->next->next;
+//    }
+//    return slow;
+//}
+//
+//struct ListNode* reverseList(struct ListNode* head)
+//{
+//    struct ListNode* cur = head;
+//    struct ListNode* newNode = NULL;
+//    while (cur)
+//    {
+//        struct ListNode* next = cur->next;
+//        // 头插
+//        cur->next = newNode;
+//        newNode = cur;
+//
+//        // cur迭代
+//        cur = next;
+//    }
+//
+//    return newNode;
+//}
+//
+//class PalindromeList {
+//public:
+//    bool chkPalindrome(ListNode* A) {
+//        struct ListNode* mid = middleNode(A);
+//        struct ListNode* rHead = reverseList(mid);
+//
+//        // A和rHead一般不会直接使用，拷贝一份
+//        struct ListNode* curA = A;
+//        struct ListNode* curR = rHead;
+//
+//        while (curA && curR)
+//        {
+//            if (curA->val != curR->val)
+//            {
+//                return false;
+//            }
+//            curA = curA->next;
+//            curR = curR->next;
+//        }
+//        return true;
+//    }
+//};
+
+// 160. 相交链表
+
+// 思路1：暴力法
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     struct ListNode *next;
+ * };
+ */
+//struct ListNode* getIntersectionNode(struct ListNode* headA, struct ListNode* headB)
+//{
+//    struct ListNode* curA = headA;
+//
+//    while (curA)
+//    {
+//        struct ListNode* ccurA = curA;
+//        struct ListNode* curB = headB;
+//        while (curB)
+//        {
+//            if (ccurA == curB)
+//            {
+//                return ccurA;
+//            }
+//            else
+//            {
+//                curB = curB->next;
+//            }
+//        }
+//        curA = curA->next;
+//    }
+//    return NULL;
+//}
+
+// 思路2：差值法
+
+struct ListNode* getIntersectionNode(struct ListNode* headA, struct ListNode* headB)
+{
+    struct ListNode* tailA = headA;
+    struct ListNode* tailB = headB;
+    int lenA = 0, lenB = 0;
+
+    while (tailA->next)
     {
-        struct ListNode* lessTail, * lessHead, * greaterTail, * greaterHead;
-        // 建立哨兵位
-        lessTail = lessHead = (struct ListNode*)malloc(sizeof(struct ListNode));
-        greaterTail = greaterHead = (struct ListNode*)malloc(sizeof(struct ListNode));
-
-        struct ListNode* cur = pHead;
-
-        while (cur)
-        {
-            if (cur->val < x)
-            {
-                lessTail->next = cur;
-                lessTail = cur;
-            }
-            else
-            {
-                greaterTail->next = cur;
-                greaterTail = cur;
-            }
-            cur = cur->next;
-        }
-        lessTail->next = greaterHead->next;
-        greaterTail->next = NULL;
-
-        struct ListNode* ans = lessHead->next;
-        free(lessHead);
-        free(greaterHead);
-        return ans;
-
+        lenA++;
+        tailA = tailA->next;
     }
-};
+
+    while (tailB->next)
+    {
+        lenB++;
+        tailB = tailB->next;
+    }
+
+    if (tailA != tailB)
+    {
+        return NULL;
+    }
+
+    int gap = abs(lenA - lenB);// 求差值
+
+    struct ListNode* longList = lenA > lenB ? headA : headB;
+    struct ListNode* shortList = lenA > lenB ? headB : headA;
+
+    while (gap--)
+    {
+        longList = longList->next;
+    }
+
+    while (longList != shortList)
+    {
+        longList = longList->next;
+        shortList = shortList->next;
+    }
+
+    return longList;
+}
