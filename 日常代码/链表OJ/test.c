@@ -523,44 +523,158 @@
 
 // 思路2：差值法
 
-struct ListNode* getIntersectionNode(struct ListNode* headA, struct ListNode* headB)
-{
-    struct ListNode* tailA = headA;
-    struct ListNode* tailB = headB;
-    int lenA = 0, lenB = 0;
+//struct ListNode* getIntersectionNode(struct ListNode* headA, struct ListNode* headB)
+//{
+//    struct ListNode* tailA = headA;
+//    struct ListNode* tailB = headB;
+//    int lenA = 0, lenB = 0;
+//
+//    while (tailA->next)
+//    {
+//        lenA++;
+//        tailA = tailA->next;
+//    }
+//
+//    while (tailB->next)
+//    {
+//        lenB++;
+//        tailB = tailB->next;
+//    }
+//
+//    if (tailA != tailB)
+//    {
+//        return NULL;
+//    }
+//
+//    int gap = abs(lenA - lenB);// 求差值
+//
+//    struct ListNode* longList = lenA > lenB ? headA : headB;
+//    struct ListNode* shortList = lenA > lenB ? headB : headA;
+//
+//    while (gap--)
+//    {
+//        longList = longList->next;
+//    }
+//
+//    while (longList != shortList)
+//    {
+//        longList = longList->next;
+//        shortList = shortList->next;
+//    }
+//
+//    return longList;
+//}
 
-    while (tailA->next)
-    {
-        lenA++;
-        tailA = tailA->next;
-    }
+// 141. 环形链表
 
-    while (tailB->next)
-    {
-        lenB++;
-        tailB = tailB->next;
-    }
+// 思路：双指针
 
-    if (tailA != tailB)
-    {
-        return NULL;
-    }
+//bool hasCycle(struct ListNode* head)
+//{
+//    struct ListNode* fast, * slow;
+//    fast = slow = head;
+//
+//    while (fast && fast->next)
+//    {
+//        slow = slow->next;
+//        fast = fast->next->next;
+//
+//        if (fast == slow)
+//        {
+//            return true;
+//        }
+//    }
+//    return false;
+//}
 
-    int gap = abs(lenA - lenB);// 求差值
+// 142. 环形链表 II
 
-    struct ListNode* longList = lenA > lenB ? headA : headB;
-    struct ListNode* shortList = lenA > lenB ? headB : headA;
+// 思路1：公式法
 
-    while (gap--)
-    {
-        longList = longList->next;
-    }
+//struct ListNode* detectCycle(struct ListNode* head)
+//{
+//    struct ListNode* fast, * slow;
+//    fast = slow = head;
+//
+//    while (fast && fast->next)
+//    {
+//        slow = slow->next;
+//        fast = fast->next->next;
+//
+//        // 相遇
+//        if (fast == slow)
+//        {
+//            struct ListNode* meetNode = slow;
+//            // 公式推导
+//            while (meetNode != head)
+//            {
+//                head = head->next;
+//                meetNode = meetNode->next;
+//            }
+//            return meetNode;
+//        }
+//    }
+//    return NULL;
+//}
 
-    while (longList != shortList)
-    {
-        longList = longList->next;
-        shortList = shortList->next;
-    }
+// 思路2：转化为相交链表
 
-    return longList;
-}
+//struct ListNode* detectCycle(struct ListNode* head)
+//{
+//    struct ListNode* fast, * slow;
+//    fast = slow = head;
+//    struct ListNode* tail = NULL;
+//
+//    while (fast && fast->next)
+//    {
+//        slow = slow->next;
+//        fast = fast->next->next;
+//
+//        // 相遇
+//        if (fast == slow)
+//        {
+//            tail = slow;
+//            break;
+//        }
+//    }
+//
+//    // 没有相遇
+//    if (tail == NULL)
+//    {
+//        return NULL;
+//    }
+//    struct ListNode* newHead = tail->next;
+//    int lenH = 1, lenN = 1;
+//
+//    struct ListNode* curH = head, * curN = newHead;
+//
+//    while (curH != tail)
+//    {
+//        lenH++;
+//        curH = curH->next;
+//    }
+//
+//    while (curN != tail)
+//    {
+//        lenN++;
+//        curN = curN->next;
+//    }
+//
+//    struct ListNode* longList = lenH > lenN ? head : newHead;
+//    struct ListNode* shortList = lenH > lenN ? newHead : head;
+//
+//    int gap = abs(lenH - lenN);
+//
+//    while (gap--)
+//    {
+//        longList = longList->next;
+//    }
+//
+//    while (longList != shortList)
+//    {
+//        longList = longList->next;
+//        shortList = shortList->next;
+//    }
+//
+//    return longList;
+//}
