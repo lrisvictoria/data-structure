@@ -678,3 +678,85 @@
 //
 //    return longList;
 //}
+
+// 138. 复制带随机指针的链表
+
+// 思路：
+// 1. 复制节点，插入到原节点和下一个节点之间
+// 2. 根据原节点random，处理复制节点的random
+// 3. 复制节点链接为新链表，原链表恢复
+
+/**
+ * Definition for a Node.
+ * struct Node {
+ *     int val;
+ *     struct Node *next;
+ *     struct Node *random;
+ * };
+ */
+
+struct Node* copyRandomList(struct Node* head)
+{
+    struct Node* cur = head;
+
+    // 1. 在原节点后插入复制节点
+    while (cur)
+    {
+        // 插入复制节点
+        struct Node* copy = (struct Node*)malloc(sizeof(struct Node));
+        copy->val = cur->val;
+
+        copy->next = cur->next;
+        cur->next = copy;
+
+        // cur往后迭代
+        cur = copy->next;
+    }
+
+    // 2. 根据原节点的random，处理复制节点的random
+    cur = head;
+
+    while (cur)
+    {
+        // copy节点在cur的后面
+        struct Node* copy = cur->next;
+
+        if (cur->random == NULL)
+        {
+            copy->random = NULL;
+        }
+        else
+        {
+            copy->random = cur->random->next;
+        }
+
+        cur = copy->next;
+    }
+
+    // 3. 复制节点链接为新链表，原节点恢复
+
+    struct Node* copyHead = NULL, * copyTail = NULL;
+    cur = head;
+
+    while (cur)
+    {
+        struct Node* copy = cur->next;
+        struct Node* next = copy->next;// 记录原链表的下一个节点
+
+        // 复制节点链接为新链表(本质为尾插)
+        if (copyTail == NULL)
+        {
+            copyHead = copyTail = copy;
+        }
+        else
+        {
+            copyTail->next = copy;
+            copyTail = copy;
+        }
+
+        cur->next = next;// 恢复链接
+        cur = next;
+    }
+
+    return copyHead;
+}
