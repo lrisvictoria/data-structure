@@ -34,3 +34,15 @@ void ListPushFront(LTNode* phead, LTDataType x);
 
 // 头删
 void ListPopFront(LTNode* phead);
+
+// 查找元素
+LTNode* ListFind(LTNode* phead, LTDataType x);
+
+// 双向链表在pos的前面进行插入
+void ListInsert(LTNode* pos, LTDataType x);
+
+// 双向链表删除pos位置的节点
+void ListErase(LTNode* pos);
+
+// 销毁双向链表
+void ListDestroy(LTNode* phead);
