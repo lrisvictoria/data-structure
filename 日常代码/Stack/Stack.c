@@ -8,7 +8,8 @@ void StackInit(ST* ps)
 	assert(ps);
 	ps->a = NULL;
 	ps->top = 0;// ps->top = -1;
-	// top为0，代表
+	// top为0，代表指向栈顶的下一个元素
+	// top为1，代表指向栈顶
 	ps->capacity = 0;
 }
 
