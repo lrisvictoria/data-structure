@@ -18,7 +18,7 @@ void GetNextVal(int* next, const char* sub)
 	
 	while (i < lenSub)
 	{
-		if (next[i] == sub[next[i]])
+		if (sub[i] == sub[next[i]])
 		{
 			next[i] = next[next[i]];
 		}
