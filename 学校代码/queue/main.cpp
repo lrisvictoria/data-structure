@@ -1,78 +1,95 @@
 #include <graphics.h>
-
-#define DataType int 
+#include <stdio.h>
+#define DataType int
 #define MaxQueueSize 8
-/*
-typedef struct 
-{
+typedef struct{
 	DataType queue[MaxQueueSize];
 	int front;
 	int rear;
-	int count;
+	int count;	
 }SeqQueue;
 
 SeqQueue q;
 
-// 1. 初始化
-void QueueInit(SeqQueue* q)
+//1
+void QueueInitiate(SeqQueue *Q)
 {
-	q->front = 0;
-	q->rear = 0;
-	q->count = 0;
+	Q->front=0;
+	Q->rear=0;
+	Q->count=0;
 }
 
-// 2. 输入队列
-int QueueAppend(SeqQueue* q, DataType x)
+//2
+int QueueAppend(SeqQueue *Q,DataType x)
 {
-	q->queue[q->rear] = x;
-	q->rear = (q->rear + 1) % MaxQueueSize;
-	q->count++;
+	Q->queue[Q->rear]=x;
+	Q->rear=(Q->rear+1)%MaxQueueSize;	
+	Q->count++;
 	return 1;
 }
 
-// 3. 删除队列元素
-int QueueDelete(SeqQueue* q, DataType* d)
-{
-	*d = q->queue[q->front];
-	q->front = (q->front + 1) % MaxQueueSize;
-	q->count--;
-	return 1;
-}
+//3
 
+DataType deletecount=0;
+
+int QueueDelete(SeqQueue *Q,DataType *d)
+{
+	*d=Q->queue[Q->front];
+	Q->front=(Q->front+1)%MaxQueueSize;
+	Q->count--;
+	//输出表
+	deletecount++;//计数加一
+		xyprintf(10,172.5,"输出"); 
+		for(int i=0;i<=MaxQueueSize;i++)
+		{
+				rectangle(50,150,450,200);
+				line(50+50*i,150,50+50*i,200);
+				xyprintf(72.5+50*deletecount,172.5,"%d",Q->queue[Q->front-1]);
+		}
+		Q->queue[Q->front-1]=0;//出列置零
+	return 1;
+	
+}
+void Show()
+{
+	//循环队列内容
+	rectangle(50,50,450,100);
+	for(int i=1;i<=MaxQueueSize-1;i++)
+	{
+			line(50+50*i,50,50+50*i,100);
+			
+	}
+	for(int i=0;i<MaxQueueSize;i++)
+	{
+		xyprintf(72.5+50*i,72.5,"%d",q.queue[i]);
+		xyprintf(72.5+50*(q.rear),122.5,"↑rear");
+		xyprintf(72.5+50*(q.front),22.5,"↓front");
+	}
+	xyprintf(10,10,"count=%d",q.count);
+	
+	getch();
+	cleardevice();
+	
+}
 int main()
 {
-	initgraph(800, 600);
+	initgraph(800,600);
 	setcolor(BLUE);
 	setbkcolor(WHITE);
 	setbkmode(TRANSPARENT);
 	setrendermode(RENDER_MANUAL);
-	
-	QueueInit(&q);
-	
-	QueueAppend(&q, 11);	
+	QueueInitiate(&q);
+	QueueAppend(&q, 11);
+	Show();
 	QueueAppend(&q, 13);
+	Show();
 	QueueAppend(&q, 7);
-	
+	Show();
 	DataType d;
 	QueueDelete(&q, &d);
+	Show();
 	QueueDelete(&q, &d);
-	
-	QueueAppend(&q, 5);
-	
-	getch();
-	
-	return 0;
-}
-
-*/
-
-#include <iostream>
-#include <windows.h>
-using namespace std;
-
-int main()
-{
-	cout << "hello world" << endl;
-	system("pause");
-	return 0;
+	Show();
+	QueueDelete(&q, &d);
+	Show();
 }
