@@ -114,6 +114,7 @@ void ListPushFront(LTNode* phead, LTDataType x)
 void ListPopFront(LTNode* phead)
 {
 	assert(phead);
+	assert(phead->next != phead);
 
 	/*LTNode* next = phead->next;
 	LTNode* nextNext = next->next;
