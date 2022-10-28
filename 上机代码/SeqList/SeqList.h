@@ -1,43 +1,31 @@
 #pragma once
+
 #include <stdio.h>
-#include <assert.h>
 #include <stdlib.h>
+#include <assert.h>
+#include <string.h>
 
-typedef int SLDateType;
+typedef int SLDataType;
 
-/*
-* 静态顺序表 -- 不太实用
-* 开小了不够用
-* 开大了浪费
-#define N 10
-struct SeqList
-{
-	int a[N];
-	int size; // 记录存储多少个有效数据
-};
-*/
-
-// 动态顺序表 -- 按需扩空间
+// 动态顺序表
 typedef struct SeqList
 {
-	SLDateType* a;
-	int size;
-	int capacity; 
-}SeqList;
+	SLDataType* a;
+	int sz;// 表示数组中存储了多少个数据
+	int capacity;// 数组实际能存数据的空间容量是多大
+}SL;
 
-// 对数据的管理:增删查改 
-void SeqListInit(SeqList* ps);
-void SeqListDestroy(SeqList* ps);
+void SeqListInit(SL* ps);
+void SeqListCheckCapacity(SL* ps);
+void SeqListPushBack(SL* ps, SLDataType x);
+void SeqListPopBack(SL* ps);
+void SeqListPushFront(SL* ps, SLDataType x);
+void SeqListPopFront(SL* ps);
+void SeqListPrint(SL* ps);
+void SeqListDestory(SL* ps);
 
-void SeqListPrint(SeqList* ps);
-void SeqListPushBack(SeqList* ps, SLDateType x);
-void SeqListPushFront(SeqList* ps, SLDateType x);
-void SeqListPopFront(SeqList* ps);
-void SeqListPopBack(SeqList* ps);
-
-// 顺序表查找
-int SeqListFind(SeqList* ps, SLDateType x);
-// 顺序表在pos位置插入x
-void SeqListInsert(SeqList* ps, size_t pos, SLDateType x);
-// 顺序表删除pos位置的值
-void SeqListErase(SeqList* ps, size_t pos);
+// 找到了返回x位置下标，没有没到返回-1
+int SeqListFind(SL* ps, SLDataType x);// 查找
+void SeqListInsert(SL* ps, int pos, SLDataType x);// 指定下标位置插入
+void SeqListErase(SL* ps, int pos);// 删除pos位置的数据
+void SeqListModify(SL* ps, int pos, int x);// 修改pos位置的数据
