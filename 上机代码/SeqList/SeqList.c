@@ -28,9 +28,11 @@ void SeqListCheckCapacity(SL* ps)
 
 void SeqListPushBack(SL* ps, SLDataType x)
 {
-	assert(ps);
+	/*assert(ps);
 	SeqListCheckCapacity(ps);
-	ps->a[ps->sz++] = x;
+	ps->a[ps->sz++] = x;*/
+
+	SeqListInsert(ps, ps->sz, x);
 }
 
 void SeqListPopBack(SL* ps)
@@ -43,7 +45,7 @@ void SeqListPopBack(SL* ps)
 
 void SeqListPushFront(SL* ps, SLDataType x)
 {
-	assert(ps);
+	/*assert(ps);
 	SeqListCheckCapacity(ps);
 
 	int end = ps->sz - 1;
@@ -53,7 +55,9 @@ void SeqListPushFront(SL* ps, SLDataType x)
 		end--;
 	}
 	ps->a[0] = x;
-	ps->sz++;
+	ps->sz++;*/
+
+	SeqListInsert(ps, 0, x);
 }
 
 void SeqListPopFront(SL* ps)
@@ -98,18 +102,36 @@ void SeqListDestory(SL* ps)
 }
 
 // 找到了返回x位置下标，没有没到返回-1
-int SeqListFind(SL* ps, SLDataType x)
+//int SeqListFind(SL* ps, SLDataType x)
+//{
+//	assert(ps);
+//
+//	assert(ps->sz > 0);
+//
+//	for (int i = 0; i < ps->sz; i++)
+//	{
+//		if (ps->a[i] == x)
+//			return i;
+//	}
+//	return -1;
+//}
+
+// 以上方法只能找到链表中第一个等于 x 的下标
+// 我们给增加一个参数 begin 为开始查找的位置
+
+int SeqListFind(SL* ps, SLDataType x, int begin)
 {
 	assert(ps);
-
-	assert(ps->sz > 0);
-
-	for (int i = 0; i < ps->sz; i++)
-	{
-		if (ps->a[i] == x)
-			return i;
-	}
-	return -1;
+	
+		assert(ps->sz > 0);
+	
+		// 每次从 begin 开始找
+		for (int i = begin; i < ps->sz; i++)
+		{
+			if (ps->a[i] == x)
+				return i;
+		}
+		return -1;
 }
 
 void SeqListInsert(SL* ps, int pos, SLDataType x)
@@ -133,7 +155,11 @@ void SeqListErase(SL* ps, int pos)
 {
 	assert(ps);
 	assert(pos >= 0 && pos <= ps->sz - 1);
-	assert(ps->sz > 0);
+	// 其实这行不用加，加上也没有意义
+	// 如果顺序表空，那么在 pos <= ps->sz - 1 时就会报错
+	// 无论 pos 是小于0，还是说 pos 大于0，只要表空，那么断言就会出错
+	// 实际上走不到这条语句
+	// assert(ps->sz > 0);
 
 	int start = pos + 1;
 	while (start <= ps->sz - 1)

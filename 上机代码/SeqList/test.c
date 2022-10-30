@@ -23,6 +23,14 @@ void TestSL1()
 	// 但是一旦再次进行插入，就非法访问了，那么到时候销毁(free)时，会对周围空间进行检查，
 	// 检测到越界了，就会报错
 
+	// 在学习数据结构的时候，经常会遇到 free 报错的情况
+	// free 主动报错只有两种情况
+	// 1. free 的为野指针
+	// 2. free 的内存不是动态开辟的内存，或者释放的空间不完整
+	// 如果这两个都没有错误，就是越界访问
+	// 且 free 都不一定报错
+
+
 	// SeqListPopBack(&sl);
 	// SeqListPushBack(&sl, 6);
 
@@ -99,12 +107,44 @@ void TestSL4()
 	SeqListDestory(&sl);
 }
 
+void TestSL5()
+{
+
+	SL sl;
+	SeqListInit(&sl);
+	SeqListPushFront(&sl, 1);
+	SeqListPushFront(&sl, 5);
+	SeqListPushFront(&sl, 3);
+	SeqListPushFront(&sl, 5);
+	SeqListPushFront(&sl, 5);
+	SeqListPrint(&sl);
+
+	// 删除顺序表中所有的5
+	int pos = SeqListFind(&sl, 5, 0);
+
+	while (pos != -1)
+	{
+		SeqListErase(&sl, pos);
+		// 每当删除一个元素，那么之前的 pos 位置就是后面的值
+		// 然后再次进行查找，把 pos 给给 查找接口
+		// 查找接口的值就是下次需要删除的位置
+		// 知道删空
+
+		pos = SeqListFind(&sl, 5, pos);
+	}
+
+	SeqListPrint(&sl);
+
+	SeqListDestory(&sl);
+}
+
 int main()
 {
 	//TestSL1();
 	//TestSL2();
 	//TestSL3();
-	TestSL4();
+	//TestSL4();
+	TestSL5();
 
 	return 0;
 }
