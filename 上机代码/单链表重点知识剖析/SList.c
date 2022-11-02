@@ -44,8 +44,100 @@ void SLTPrint(SLTNode* phead)
 
 	while (cur != NULL)
 	{
-		printf("%d->", cur->data);
+		printf("[%d|%p]->", cur->data);
 		cur = cur->next;
 	}
 	printf("NULL");
+	printf("\n");
+}
+
+void SLTPushBack(SLTNode** pphead, SLTDataType x)
+{
+	SLTNode* newnode = BuySLTNode(x);
+	// 找尾
+	// 这样可不可行？
+	// 对不对？
+	// 当然不对，看板书
+	/*while (tail != NULL)
+	{
+		tail = tail->next;
+	}
+	tail = newnode;*/
+
+	// 正确写法
+	if (*pphead == NULL)
+	{
+		*pphead = newnode;
+	}
+	else
+	{
+		SLTNode* tail = *pphead;
+		while (tail->next != NULL)
+		{
+			tail = tail->next;
+		}
+		tail->next = newnode;
+	}
+}
+
+void SLTPopBack(SLTNode** pphead)
+{
+	assert(*pphead);
+	
+	if ((*pphead)->next == NULL)
+	{
+		free(*pphead);
+		*pphead = NULL;
+	}
+	else
+	{
+		SLTNode* tail = *pphead;
+		SLTNode* prev = NULL;
+		// 法1
+		while (tail->next)
+		{
+			prev = tail;
+			tail = tail->next;
+		}
+		free(tail);
+		prev->next = NULL;
+	}
+}
+
+//void SLTPopBack(SLTNode** pphead)
+//{
+//	assert(*pphead);
+//
+//	SLTNode* tail = *pphead;
+//	// 法2
+//	while (tail->next->next)
+//	{
+//		tail = tail->next;
+//	}
+//	free(tail->next);
+//	tail->next = NULL;
+//}
+
+// 单链表真正的优势是头插、头删
+
+void SLTPushFront(SLTNode** pphead, SLTDataType x)
+{
+	SLTNode* newnode = BuySLTNode(x);
+	newnode->next = *pphead;
+	*pphead = newnode;
+}
+
+void SLTPopFront(SLTNode** pphead)
+{
+	assert(*pphead);
+	/*
+	SLTNode* cur = *pphead;
+	*pphead = (*pphead)->next;
+	free(cur);
+	*/
+
+	// 法2
+	SLTNode* next = (*pphead)->next;
+	free(*pphead);
+	*pphead = next;
 }

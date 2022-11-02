@@ -40,10 +40,45 @@ void TestSList1()
 
 	SLTNode* plist = CreateSList(n);
 
+	SLTPushBack(plist, 100);
+	SLTPushBack(plist, 100);
+	SLTPushBack(plist, 100);
+
+
 	SLTPrint(plist);
+}
+
+void TestSList2()
+{
+	SLTNode* plist = NULL;
+	SLTPushBack(&plist, 100);
+	SLTPushBack(&plist, 100);
+	SLTPushBack(&plist, 100);
+	SLTPrint(plist);
+
+	SLTPopBack(&plist);
+	SLTPrint(plist);
+	SLTPopBack(&plist);
+	SLTPrint(plist);
+	SLTPopBack(&plist);
+	SLTPrint(plist);
+
+
+	SLTPushFront(&plist, 1);
+	SLTPushFront(&plist, 2);
+	SLTPushFront(&plist, 3);
+
+	SLTPopFront(&plist);
+	SLTPrint(plist);
+	SLTPopFront(&plist);
+	SLTPrint(plist); 
+	SLTPopFront(&plist);
+	SLTPrint(plist);
+
 }
 
 int main()
 {
-	TestSList1();
+	//TestSList1();
+	TestSList2();
 }
