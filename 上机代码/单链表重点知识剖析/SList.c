@@ -239,4 +239,6 @@ void SLTDestory(SLTNode** pphead)
 		free(cur);
 		cur = next;
 	}
+	// 这里需要置空，防止链表销毁后被误使用
+	*pphead = NULL;
 }

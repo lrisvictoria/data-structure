@@ -95,10 +95,16 @@ void TestSList3()
 
 	pos = SLTFind(plist, 3);
 	SLTErase(&plist, pos);
+	// 这里由于 pos 位置被释放，最好再置空
+	pos = NULL;
 	SLTPrint(plist);
 
 	pos = SLTFind(plist, 2);
 	SLTEraseAfter(pos);
+	SLTPrint(plist);
+
+	// 销毁接口中不置空导致野指针，置空了就没事
+	SLTDestory(&plist);
 	SLTPrint(plist);
 }
 
