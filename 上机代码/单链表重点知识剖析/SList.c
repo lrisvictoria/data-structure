@@ -44,7 +44,7 @@ void SLTPrint(SLTNode* phead)
 
 	while (cur != NULL)
 	{
-		printf("[%d|%p]->", cur->data);
+		printf("%d->", cur->data);
 		cur = cur->next;
 	}
 	printf("NULL");
@@ -140,4 +140,18 @@ void SLTPopFront(SLTNode** pphead)
 	SLTNode* next = (*pphead)->next;
 	free(*pphead);
 	*pphead = next;
+}
+
+SLTNode* SLTFind(SLTNode* phead, SLTDataType x)
+{
+	SLTNode* cur = phead;
+	while (cur)
+	{
+		if (cur->data == x)
+		{
+			return cur;
+		}
+		cur = cur->next;
+	}
+	return NULL;
 }

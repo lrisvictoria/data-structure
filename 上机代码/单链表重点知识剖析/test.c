@@ -77,8 +77,28 @@ void TestSList2()
 
 }
 
+void TestSList3()
+{
+	SLTNode* plist = NULL;
+	SLTPushBack(&plist, 1);
+	SLTPushBack(&plist, 2);
+	SLTPushBack(&plist, 3);
+	SLTPrint(plist);
+
+	SLTNode* pos = SLTFind(plist, 3);
+	if (pos)
+	{
+		printf("找到了\n");
+	}
+	else
+	{
+		printf("没找到\n");
+	}
+}
+
 int main()
 {
 	//TestSList1();
-	TestSList2();
+	//TestSList2();
+	TestSList3();
 }
