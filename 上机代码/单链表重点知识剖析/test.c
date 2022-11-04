@@ -86,14 +86,20 @@ void TestSList3()
 	SLTPrint(plist);
 
 	SLTNode* pos = SLTFind(plist, 3);
-	if (pos)
-	{
-		printf("找到了\n");
-	}
-	else
-	{
-		printf("没找到\n");
-	}
+	SLTInsertAfter(pos, 30);
+	SLTPrint(plist);
+
+	pos = SLTFind(plist, 3);
+	SLTInsert(&plist, pos, 60);
+	SLTPrint(plist);
+
+	pos = SLTFind(plist, 3);
+	SLTErase(&plist, pos);
+	SLTPrint(plist);
+
+	pos = SLTFind(plist, 2);
+	SLTEraseAfter(pos);
+	SLTPrint(plist);
 }
 
 int main()

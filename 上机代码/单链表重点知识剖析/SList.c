@@ -155,3 +155,88 @@ SLTNode* SLTFind(SLTNode* phead, SLTDataType x)
 	}
 	return NULL;
 }
+
+void SLTInsertAfter(SLTNode* pos, SLTDataType x)
+{
+	assert(pos);
+	SLTNode* newnode = BuySLTNode(x);
+	// 链接的时候看看清楚，小心成环！！！
+	newnode->next = pos->next;
+	pos->next = newnode;
+}
+
+void SLTEraseAfter(SLTNode* pos)
+{
+	assert(pos);
+
+	if (pos->next == NULL)
+	{
+		return;
+	}
+	else
+	{
+		SLTNode* nextNode = pos->next;
+		pos->next = nextNode->next;
+		free(nextNode);
+		// 小心野指针错误
+		// 这个其实也挺好理解的，想一下就可以
+		// 我就不多赘述了，写这个的时候已经详细写过了
+		/*free(pos->next);
+		pos->next = pos->next->next;*/
+	}
+}
+
+
+void SLTInsert(SLTNode** pphead, SLTNode* pos, SLTDataType x)
+{
+	assert(pos);
+
+	if (*pphead == NULL)
+	{
+		SLTPushFront(pphead, x);
+	}
+	else
+	{
+		SLTNode* newnode = BuySLTNode(x);
+		SLTNode* prev = *pphead;
+		while (prev->next != pos)
+		{
+			prev = prev->next;
+		}
+		newnode->next = pos;
+		prev->next = newnode;
+	}
+}
+ 
+void SLTErase(SLTNode** pphead, SLTNode* pos)
+{
+	// 这里只要断言 pos 就可以了
+	// 因为如果 *pphead 为空，那么 pos 一定找不到为空
+	assert(pos);
+
+	if (pos == *pphead)
+	{
+		SLTPopFront(pphead);
+	}
+	else
+	{
+		SLTNode* prev = *pphead;
+		while (prev->next != pos)
+		{
+			prev = prev->next;
+		}
+		prev->next = pos->next;
+		free(pos);
+	}
+}
+
+void SLTDestory(SLTNode** pphead)
+{
+	SLTNode* cur = *pphead;
+	while (cur)
+	{
+		SLTNode* next = cur->next;
+		free(cur);
+		cur = next;
+	}
+}
