@@ -11,7 +11,7 @@ struct ListNode
 
 struct ListNode* CreatreList(int* a, int n)
 {
-	struct ListNode* phead = NULL, * ptail = NULL;
+	struct ListNode* phead = NULL, *ptail = NULL;
 	for (int i = 0; i < n; i++)
 	{
 		struct ListNode* newnode = (struct ListNode*)malloc(sizeof(struct ListNode));
