@@ -2,6 +2,7 @@
 #include <cmath>
 #define DataType char
 #define MaxTreeSize 128
+
 typedef struct {
 	DataType biTree[MaxTreeSize];
 	int size;
