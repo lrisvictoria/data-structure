@@ -20,7 +20,7 @@ void QueueDestroy(Queue* pq)
 	{
 		QNode* next = cur->next;
 		free(cur);
-		cur = cur->next;
+		cur = next;
 	}
 
 	pq->head = pq->tail = NULL;
