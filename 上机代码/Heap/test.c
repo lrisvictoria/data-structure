@@ -51,8 +51,8 @@ void TestHp2()
 
 int main()
 {
-	//TestHp1();
-	TestHp2();
+	TestHp1();
+	//TestHp2();
 	
 	return 0;
 }

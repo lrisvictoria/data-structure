@@ -2,19 +2,20 @@
 
 #include "Heap.h"
 
+void AdjustDown(HPDataType* a, int n, int parent);
 // 堆的构建
 
 // 1. 复用构建
-void HeapCreate(HP* php, HPDataType* a, int n)
-{
-	assert(php);
-
-	HeapInit(&php);
-	for (int i = 0; i < n; i++)
-	{
-		HeapPush(&php, a[i]);
-	}
-}
+//void HeapCreate(HP* php, HPDataType* a, int n)
+//{
+//	assert(php);
+//
+//	HeapInit(&php);
+//	for (int i = 0; i < n; i++)
+//	{
+//		HeapPush(&php, a[i]);
+//	}
+//}
 
 // 2. 建堆算法
 void HeapCreate(HP* php, HPDataType* a, int n)
@@ -31,7 +32,7 @@ void HeapCreate(HP* php, HPDataType* a, int n)
 		perror("malloc fail");
 		exit(-1);
 	}
-	memset(php->a, 0, sizeof(HPDataType) * n);
+	memcpy(php->a, a, sizeof(HPDataType) * n);
 
 	for (int i = (n - 1 - 1) / 2; i >= 0; i--)
 	{
@@ -87,10 +88,10 @@ void AdjustUp(HPDataType* a, int child)
 	// 算父亲
 	int parent = (child - 1) / 2;
 
-	// 默认大堆
+	// 默认小堆
 	while (child > 0)
 	{
-		if (a[child] > a[parent])
+		if (a[child] < a[parent])
 		{
 			Swap(&a[child], &a[parent]);
 			child = parent;
@@ -138,12 +139,12 @@ void AdjustDown(HPDataType* a, int n, int parent)
 
 	while (minchild < n)
 	{
-		// 找最大孩子
-		if (minchild + 1 < n && a[minchild + 1] > a[minchild])
+		// 找最小孩子
+		if (minchild + 1 < n && a[minchild + 1] < a[minchild])
 		{
 			minchild++;
 		}
-		if (a[parent] < a[minchild])
+		if (a[parent] > a[minchild])
 		{
 			Swap(&a[parent], &a[minchild]);
 			parent = minchild;
