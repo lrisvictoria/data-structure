@@ -154,6 +154,33 @@ int TreeKLevelSize(BTNode* root, int k)
 	}
 }
 
+BTNode* TreeFind(BTNode* root, int x)
+{
+	// 如果 root 为空，则返回空
+	if (root == NULL)
+	{
+		return NULL;
+	}
+
+	// 找到了
+	if (root->data == x)
+	{
+		return root;
+	}
+
+	// 否则递归左右子树
+	BTNode* ret1 = TreeFind(root->left, x);
+	// 如果左子树非空，则找到了，返回
+	if (ret1 != NULL)
+		return ret1;
+	BTNode* ret2 = TreeFind(root->right, x);
+	if (ret2 != NULL)
+		return ret2;
+
+	// 到这里没找到，就得返回NULL
+	return NULL;
+}
+
 void TestBTree2()
 {
 	// 构建二叉树
