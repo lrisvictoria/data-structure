@@ -5,7 +5,9 @@
 #include <assert.h>
 #include <stdlib.h>
 
-typedef BTNode QDataType;
+extern struct BinaryTreeNode;
+
+typedef struct BinaryTreeNode* QDataType;
 
 typedef struct QueueNode
 {

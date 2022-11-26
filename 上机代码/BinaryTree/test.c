@@ -114,6 +114,41 @@ int TreeHeight(BTNode* root)
 	return leftHeight > rightHeight ? leftHeight + 1 : rightHeight + 1;
 }
 
+// 层序遍历
+void LevelOrder(BTNode* root)
+{
+	Queue q;
+	QueueInit(&q);
+
+	// 如果根非空，则入队列
+	if (root != NULL)
+	{
+		QueuePush(&q, root);
+	}
+
+	// 队列非空则进行遍历
+	while (!QueueEmpty(&q))
+	{
+		BTNode* front = QueueFront(&q);
+		printf("%d ", front->data);
+		QueuePop(&q);
+
+		// 非空入队列
+		if (front->left)
+		{
+			QueuePush(&q, front->left);
+		}
+		
+		if (front->right)
+		{
+			QueuePush(&q, front->right);
+		}
+	}
+
+	printf("\n");
+	QueueDestroy(&q);
+}
+
 void TestBTree1()
 {
 	// 构建二叉树
@@ -215,6 +250,8 @@ void TestBTree2()
 	printf("%d\n", TreeHeight(n1));
 
 	printf("%d\n", TreeKLevelSize(n1, 3));
+
+	LevelOrder(n1);
 }
 
 int main()
