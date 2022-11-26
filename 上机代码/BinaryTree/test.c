@@ -13,6 +13,8 @@ typedef struct BinaryTreeNode
 	struct BinaryTreeNode* right;
 }BTNode;
 
+#include "Queue.h"
+
 BTNode* BuyBTNode(BTDataType x)
 {
 	BTNode* newnode = (BTNode*)malloc(sizeof(BTNode));
@@ -180,6 +182,8 @@ BTNode* TreeFind(BTNode* root, int x)
 	// 到这里没找到，就得返回NULL
 	return NULL;
 }
+
+
 
 void TestBTree2()
 {
