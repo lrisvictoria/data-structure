@@ -149,32 +149,6 @@ void LevelOrder(BTNode* root)
 	QueueDestroy(&q);
 }
 
-void TestBTree1()
-{
-	// 构建二叉树
-	BTNode* n1 = BuyBTNode(1);
-	BTNode* n2 = BuyBTNode(2);
-	BTNode* n3 = BuyBTNode(3);
-	BTNode* n4 = BuyBTNode(4);
-	BTNode* n5 = BuyBTNode(5);
-	BTNode* n6 = BuyBTNode(6);
-
-	n1->left = n2;
-	n1->right = n4;
-	n2->left = n3;
-	n4->left = n5;
-	n4->right = n6;
-
-	PreOrder(n1);
-	printf("\n");
-
-	InOrder(n1);
-	printf("\n");
-	
-	PostOrder(n1);
-	printf("\n");
-}
-
 int TreeKLevelSize(BTNode* root, int k)
 {
 	if (root == NULL)
@@ -218,9 +192,65 @@ BTNode* TreeFind(BTNode* root, int x)
 	return NULL;
 }
 
+// 判断二叉树是否是完全二叉树
+bool TreeComplete(BTNode* root)
+{
+	// 使用层序遍历思想
+	Queue q;
+	QueueInit(&q);
 
+	// 如果非空，则入队列
+	if (root)
+		QueuePush(&q, root);
 
-void TestBTree2()
+	while (!QueueEmpty(&q))
+	{
+		BTNode* front = QueueFront(&q);
+		QueuePop(&q);
+		
+		// 一旦出队列到空，就出去判断
+		if (front == NULL)
+		{
+			break;
+		}
+		else
+		{
+			QueuePush(&q, front->left);
+			QueuePush(&q, front->right);
+		}
+	}
+
+	while (!QueueEmpty(&q))
+	{
+		BTNode* front = QueueFront(&q);
+		if (front != NULL)
+		{
+			QueueDestroy(&q);
+			return false;
+		}
+		else
+		{
+			QueuePop(&q);
+		}
+	}
+	QueueDestroy(&q);
+	return true;
+}
+
+// 销毁
+void TreeDestroy(BTNode* root)
+{
+	if (root == NULL)
+	{
+		return;
+	}
+
+	TreeDestroy(root->left);
+	TreeDestroy(root->right);
+	free(root);
+}
+
+void TestBTree1()
 {
 	// 构建二叉树
 	BTNode* n1 = BuyBTNode(1);
@@ -235,8 +265,37 @@ void TestBTree2()
 	n2->left = n3;
 	n4->left = n5;
 	n4->right = n6;
-	
-	size = 0;
+
+	PreOrder(n1);
+	printf("\n");
+
+	InOrder(n1);
+	printf("\n");
+
+	PostOrder(n1);
+	printf("\n");
+}
+
+
+void TestBTree2()
+{
+	// 构建二叉树
+	BTNode* n1 = BuyBTNode(1);
+	BTNode* n2 = BuyBTNode(2);
+	BTNode* n3 = BuyBTNode(3);
+	BTNode* n4 = BuyBTNode(4);
+	BTNode* n5 = BuyBTNode(5);
+	BTNode* n6 = BuyBTNode(6);
+	BTNode* n7 = BuyBTNode(7);
+
+	n1->left = n2;
+	n1->right = n4;
+	n2->left = n3;
+	n4->left = n5;
+	n4->right = n6;
+	n2->right = n7;
+
+	/*size = 0;
 	printf("%d\n", TreeSize1(n1));
 	size = 0;
 	printf("%d\n", TreeSize1(n1));
@@ -249,9 +308,14 @@ void TestBTree2()
 
 	printf("%d\n", TreeHeight(n1));
 
-	printf("%d\n", TreeKLevelSize(n1, 3));
+	printf("%d\n", TreeKLevelSize(n1, 3));*/
+
+	printf("%d\n", TreeComplete(n1));
 
 	LevelOrder(n1);
+
+	TreeDestroy(n1);
+	n1 = NULL;
 }
 
 int main()
