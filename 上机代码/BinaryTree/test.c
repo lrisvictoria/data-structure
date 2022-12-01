@@ -115,6 +115,41 @@ int TreeHeight(BTNode* root)
 }
 
 // 层序遍历
+//void LevelOrder(BTNode* root)
+//{
+//	Queue q;
+//	QueueInit(&q);
+//
+//	// 如果根非空，则入队列
+//	if (root != NULL)
+//	{
+//		QueuePush(&q, root);
+//	}
+//
+//	// 队列非空则进行遍历
+//	while (!QueueEmpty(&q))
+//	{
+//		BTNode* front = QueueFront(&q);
+//		printf("%d ", front->data);
+//		QueuePop(&q);
+//
+//		// 非空入队列
+//		if (front->left)
+//		{
+//			QueuePush(&q, front->left);
+//		}
+//		
+//		if (front->right)
+//		{
+//			QueuePush(&q, front->right);
+//		}
+//	}
+//
+//	printf("\n");
+//	QueueDestroy(&q);
+//}
+
+// 控制一下层序遍历一层一层出
 void LevelOrder(BTNode* root)
 {
 	Queue q;
@@ -125,26 +160,32 @@ void LevelOrder(BTNode* root)
 	{
 		QueuePush(&q, root);
 	}
-
-	// 队列非空则进行遍历
+	// 算出每层的大小
+	int levelSize = QueueSize(&q);
+	// 不为空，则继续
 	while (!QueueEmpty(&q))
 	{
-		BTNode* front = QueueFront(&q);
-		printf("%d ", front->data);
-		QueuePop(&q);
+		// 如果一层不为空，则继续出
+		while (levelSize--)
+		{
+			BTNode* front = QueueFront(&q);
+			printf("%d ", front->data);
+     			QueuePop(&q);
 
-		// 非空入队列
-		if (front->left)
-		{
-			QueuePush(&q, front->left);
+			// 非空入队列
+			if (front->left)
+			{
+				QueuePush(&q, front->left);
+			}
+
+			if (front->right)
+			{
+				QueuePush(&q, front->right);
+			}
 		}
-		
-		if (front->right)
-		{
-			QueuePush(&q, front->right);
-		}
+		printf("\n");
+		levelSize = QueueSize(&q);
 	}
-
 	printf("\n");
 	QueueDestroy(&q);
 }
