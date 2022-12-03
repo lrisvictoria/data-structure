@@ -149,10 +149,12 @@ void HeapSort(int* a, int n)
 void SelectSort(int* a, int n)
 {
 	int begin = 0, end = n - 1;
-	int mini = begin, maxi = end;
 
 	while (begin < end)
 	{
+		// mini 和 maxi 需要一直更新
+		// 每次从 begin 开始，筛选出最大值的下标和最小值的下标
+		int mini = begin, maxi = begin;
 		for (int i = begin + 1; i <= end; i++)
 		{
 			// 如果 i 处值 小于 begin(最小值位置) 所在处值，更新 mini
@@ -166,10 +168,11 @@ void SelectSort(int* a, int n)
 			{
 				maxi = i;
 			}
-
-			// 分别交换 begin 和 mini 的值 / end 和 maxi 的 值
-			// 特殊情况特殊处理
 		}
+
+		// 分别交换 begin 和 mini 的值 / end 和 maxi 的 值
+		// 特殊情况特殊处理
+		
 		Swap(&a[begin], &a[mini]);
 		if (begin == maxi)
 		{
@@ -183,22 +186,70 @@ void SelectSort(int* a, int n)
 	}
 }
 
-//int PartSort3(int* a, int begin, int end)
-//{
-//	int prev = begin;
-//	int cur = begin + 1;
-//	int keyi = begin;
-//
-//	while (cur <= end)
-//	{
-//		if (a[cur] < a[keyi])
-//		{
-//			Swap(&a[++prev], &a[cur]);
-//		}
-//
-//		++cur;
-//	}
-//	Swap(&a[prev], &a[keyi]);
-//	keyi = prev;
-//	return prev;
-//}
+void BubbleSort(int* a, int n)
+{
+	for (int j = 0; j < n - 1; j++)
+	{
+		int exchange = 0;
+		// 单趟
+		for (int i = 0; i < n - 1 - j; i++)
+		{
+			if (a[i] > a[i + 1])
+			{
+				Swap(&a[i], &a[i + 1]);
+				exchange = 1;
+			}
+			
+			// 如果一趟排序中第一次没有交换，说明本趟有序
+			// 直接跳转到下一趟
+			if (exchange == 0)
+			{
+				break;
+			}
+		}
+	}
+}
+
+// 快排
+void QuickSort(int* a, int begin, int end)
+{
+	// 如果 l > r 那么没必要递归，直接返回
+	if (begin >= end)
+	{
+		return;
+	}
+
+	int left = begin;
+	int right = end;
+	int keyi = left;
+
+	// 一次没必要递归
+	while (left < right)
+	{
+		// 防止越界，右边大于等于 keyi 值就 --
+		while (left < right && a[right] >= a[keyi])
+		{
+			right--;
+		}
+
+		// 防止越界，左边小于等于 keyi 值就 ++
+		while (left < right && a[left] <= a[keyi])
+		{
+			left++;
+		}
+		
+		// 此时停下来，一定是交换位置的地方
+		Swap(&a[left], &a[right]);
+	}
+
+	// 一次完后，交换 left 和 keyi 下标对应的值
+	// L 和 R 相遇的位置一定小于 keyi
+	Swap(&a[left], &a[keyi]);
+	
+	// left 变成新的 keyi
+	keyi = left;
+
+	// 分别递归左边和右边
+	QuickSort(a, begin, keyi - 1);
+	QuickSort(a, keyi + 1, end);
+}
