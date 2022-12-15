@@ -25,7 +25,7 @@ void TestShellSort()
 void TestOP()
 {
 	srand(time(0));
-	const int N = 100000;
+	const int N = 10000000;
 
 	int* a1 = (int*)malloc(sizeof(int) * N);
 	int* a2 = (int*)malloc(sizeof(int) * N);
@@ -49,7 +49,7 @@ void TestOP()
 	// 获取的是毫秒
 	// 过小时计算不出来
 	int begin1 = clock();
-	InsertSort(a1, N);
+	//InsertSort(a1, N);
 	int end1 = clock();
 
 	int begin2 = clock();
@@ -65,7 +65,7 @@ void TestOP()
 	int end4 = clock();
 
 	int begin5 = clock();
-	//QuickSort(a5, 0, N - 1);
+	QuickSort(a5, 0, N - 1);
 	int end5 = clock();
 
 	int begin6 = clock();
@@ -135,8 +135,9 @@ int main()
 	//TestHeapSort();
 	//TestSelectSort();
 	//TestBubbleSort();
-	TestQuickSort();
-	//TestOP();
+	//TestQuickSort();
+	
+	TestOP();
 
 
 	return 0;

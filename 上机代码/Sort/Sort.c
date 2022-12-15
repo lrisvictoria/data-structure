@@ -139,7 +139,7 @@ void HeapSort(int* a, int n)
 	// 建大堆，排升序
 	for (int i = (n - 1 - 1) / 2; i >= 0; i--)
 	{
-		AdjustDown(a, n, 0);
+		AdjustDown(a, n, i);
 	}
 
 	// 排序，将最大的值放到堆底
@@ -223,13 +223,49 @@ void BubbleSort(int* a, int n)
 	}
 }
 
-// 快排
-void QuickSort(int* a, int begin, int end)
+int GetIndexMid(int* a, int begin, int end)
 {
-	if (begin >= end)
+	int mid = (begin + end) >> 1;
+
+	if (a[begin] < a[mid])
 	{
-		return;
+		if (a[mid] < a[end])
+		{
+			return mid;
+		}
+		else if (a[begin] > a[end])
+		{
+			return begin;
+		}
+		else
+		{
+			return end;
+		}
 	}
+	else // a[begin] >= a[mid]
+	{
+		if (a[mid] > a[end])
+		{
+			return mid;
+		}
+		else if (a[end] > a[begin])
+		{
+			return begin;
+		}
+		else
+		{
+			return end;
+		}
+	}
+}
+
+// 快排总体思路差不多，对于单趟排有不同版本
+// 这边就将其分离开来
+
+int partion1(int* a, int begin, int end)
+{
+	int mid = GetIndexMid(a, begin, end);
+	Swap(&a[mid], &a[begin]);
 
 	int left = begin, right = end;
 
@@ -253,14 +289,82 @@ void QuickSort(int* a, int begin, int end)
 	}
 
 	Swap(&a[left], &a[key]);
-
-	// 改变 key 的位置
 	key = left;
 
-	// 递归左右区间
-	QuickSort(a, begin, key - 1);
-	QuickSort(a, key + 1, end);
+	return key;
 }
+
+void QuickSort(int* a, int begin, int end)
+{
+	if (begin >= end)
+	{
+		return;
+	}
+
+	// 小于一定数目使用 直接插入排序
+	if ((end - begin + 1) < 15)
+	{
+		InsertSort(a + begin, end - begin + 1);
+	}
+	else
+	{
+		int key = partion1(a, begin, end);
+		// 递归左右区间
+		QuickSort(a, begin, key - 1);
+		QuickSort(a, key + 1, end);
+	}
+}
+
+// 快排
+//void QuickSort(int* a, int begin, int end)
+//{
+//	if (begin >= end)
+//	{
+//		return;
+//	}
+//
+//	// 小于一定数目使用 直接插入排序
+//	if ((end - begin + 1) < 15)
+//	{
+//		InsertSort(a + begin, end - begin + 1);
+//	}
+//	else
+//	{
+//		// 三数取中，取出不大也不小的值
+//		int mid = GetIndexMid(a, begin, end);
+//		Swap(&a[mid], &a[begin]);
+//
+//		int left = begin, right = end;
+//
+//		int key = left;
+//
+//		while (left < right)
+//		{
+//			// 右边先走
+//			// 两个条件一个防止跑出去，找大于 a[key] 的值
+//			while (left < right && a[right] >= a[key])
+//			{
+//				right--;
+//			}
+//
+//			while (left < right && a[left] <= a[key])
+//			{
+//				left++;
+//			}
+//
+//			Swap(&a[left], &a[right]);
+//		}
+//
+//		Swap(&a[left], &a[key]);
+//
+//		// 改变 key 的位置
+//		key = left;
+//
+//		// 递归左右区间
+//		QuickSort(a, begin, key - 1);
+//		QuickSort(a, key + 1, end);
+//	}
+//}
 
 // 归并排序非递归
 void MergeSortNonR(int* a, int n)
