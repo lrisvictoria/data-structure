@@ -33,6 +33,7 @@ void TestOP()
 	int* a4 = (int*)malloc(sizeof(int) * N);
 	int* a5 = (int*)malloc(sizeof(int) * N);
 	int* a6 = (int*)malloc(sizeof(int) * N);
+	int* a7 = (int*)malloc(sizeof(int) * N);
 
 	for (int i = 0; i < N; ++i)
 	{
@@ -69,15 +70,20 @@ void TestOP()
 	int end5 = clock();
 
 	int begin6 = clock();
-	//MergeSort(a6, N);
+	//BubbleSort(a6, N);
 	int end6 = clock();
+
+	int begin7 = clock();
+	MergeSort(a7, N);
+	int end7 = clock();
 
 	printf("InsertSort:%d\n", end1 - begin1);
 	printf("ShellSort:%d\n", end2 - begin2);
 	printf("SelectSort:%d\n", end3 - begin3);
 	printf("HeapSort:%d\n", end4 - begin4);
 	printf("QuickSort:%d\n", end5 - begin5);
-	printf("MergeSort:%d\n", end6 - begin6);
+	printf("BubbleSort:%d\n", end6 - begin6);
+	printf("MergeSort:%d\n", end7 - begin7);
 
 	free(a1);
 	free(a2);
@@ -129,6 +135,16 @@ void TestQuickSort()
 	PrintArray(arr, sz);
 }
 
+void TestMergeSort()
+{
+	int arr[] = { 6, 1, 2, 7, 9, 3, 4, 5, 10, 8 };
+	int sz = sizeof(arr) / sizeof(arr[0]);
+
+	MergeSort(arr, sz);
+
+	PrintArray(arr, sz);
+}
+
 int main()
 {
 	//TestInsertSort();
@@ -137,7 +153,8 @@ int main()
 	//TestSelectSort();
 	//TestBubbleSort();
 	//TestQuickSort();
-	
+	//TestMergeSort();
+
 	TestOP();
 
 

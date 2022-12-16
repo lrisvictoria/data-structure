@@ -481,6 +481,71 @@ void QuickSortNorR(int* a, int begin, int end)
 	StackDestroy(&st);
 }
 
+void _MergeSort(int* a, int begin, int end, int* tmp)
+{
+	if (begin >= end)
+	{
+		return;
+	}
+	
+	int mid = (begin + end) >> 1;
+
+	_MergeSort(a, begin, mid, tmp);
+	_MergeSort(a, mid + 1, end, tmp);
+
+	int begin1 = begin, end1 = mid;
+	int begin2 = mid + 1, end2 = end;
+	
+	/*
+	* 此种做法 cnt 从 begin 开始
+	* memset 从 begin 位置开始，一共拷贝 end - begin + 1 个元素
+	* 和下面做法道理相同
+	*/
+	// int cnt = begin;
+	
+	/*
+	* 此种做法 cnt 从 0 开始
+	* 开始拷贝的位置从 begin 开始
+	* cnt 最终的长度就是 [begin, end] 之间的长度
+	* 没问题
+	*/
+	int cnt = 0; 
+
+	while (begin1 <= end1 && begin2 <= end2)
+	{
+		// 保持稳定性
+		if (a[begin1] <= a[begin2])
+		{
+			tmp[cnt++] = a[begin1++];
+		}
+		else
+		{
+			tmp[cnt++] = a[begin2++];
+		}
+	}
+
+	while (begin1 <= end1) tmp[cnt++] = a[begin1++];
+	while (begin2 <= end2) tmp[cnt++] = a[begin2++];
+
+	// memcpy(a + begin, tmp + begin, sizeof(int) * (end - begin + 1));
+	for (int i = begin, j = 0; i <= end; i++, j++)
+	{
+		a[i] = tmp[j];
+	}
+}
+
+void MergeSort(int* a, int n)
+{
+	int* tmp = (int*)malloc(sizeof(int) * n);
+	if (tmp == NULL)
+	{
+		perror("mallol fail");
+		return;
+	}
+
+	_MergeSort(a, 0, n - 1, tmp);
+}
+
 // 归并排序非递归
 void MergeSortNonR(int* a, int n)
 {
