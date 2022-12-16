@@ -1,6 +1,7 @@
 #define _CRT_SECURE_NO_WARNINGS 1 
 
 #include "Sort.h"
+#include "Stack.h"
 
 void PrintArray(int* a, int n)
 {
@@ -294,6 +295,77 @@ int partion1(int* a, int begin, int end)
 	return key;
 }
 
+// 挖坑法
+int partion2(int* a, int begin, int end)
+{
+	int mid = GetIndexMid(a, begin, end);
+
+	Swap(&a[begin], &a[mid]);
+
+	int left = begin, right = end;
+	int key = a[left];
+
+	int hole = left;
+
+	while (left < right)
+	{
+		// 右边找小，填到左边坑里面
+		while (left < right && a[right] >= key)
+		{
+			right--;
+		}
+
+		a[hole] = a[right];
+		hole = right;
+
+		// 左边找大，填到右边坑里面
+		while (left < right && a[left] <= key)
+		{
+			left++;
+		}
+
+		a[hole] = a[left];;
+		hole = left;
+	}
+
+	a[hole] = key;
+
+	// 最后 left 和 right 都在坑上
+	return hole;
+}
+
+int partion3(int* a, int begin, int end)
+{
+	int prev = begin;
+	int cur = begin + 1;
+	int key = begin;
+
+	while (cur <= end)
+	{
+		// 找到比 key 小的值时，跟 ++prev 位置交换，
+		// 小的往前翻，大的往后翻
+
+		// 重复数据不会交换
+		if (a[cur] < a[key] && ++prev != cur)
+			Swap(&a[cur], &a[prev]);
+
+		// 重复数据会交换
+		/*if (a[cur] < a[key])
+			Swap(&a[++prev], &a[cur]);*/
+
+			// cur 必定会走一步
+		cur++;
+	}
+
+	Swap(&a[prev], &a[key]);
+
+	//return prev;
+
+	key = prev;
+
+	return key;
+}
+
 void QuickSort(int* a, int begin, int end)
 {
 	if (begin >= end)
@@ -308,7 +380,7 @@ void QuickSort(int* a, int begin, int end)
 	}
 	else
 	{
-		int key = partion1(a, begin, end);
+		int key = partion3(a, begin, end);
 		// 递归左右区间
 		QuickSort(a, begin, key - 1);
 		QuickSort(a, key + 1, end);
@@ -365,6 +437,49 @@ void QuickSort(int* a, int begin, int end)
 //		QuickSort(a, key + 1, end);
 //	}
 //}
+
+// 如果使用队列的话相当于广度优先便利，先进先出，一层一层排
+
+// 快排非递归
+void QuickSortNorR(int* a, int begin, int end)
+{
+	ST st;
+	StackInit(&st);
+
+	// 压栈
+	StackPush(&st, begin);
+	StackPush(&st, end);
+
+	while (!StackEmpty(&st))
+	{
+		// 后进先出，先出 right
+		int right = StackTop(&st);
+		StackPop(&st);
+
+		int left = StackTop(&st);
+		StackPop(&st);
+
+		// 先取左区间，后取右区间
+		// 所以先入右区间再入左区间
+		// 如果区间内只有1个元素，则无需入栈
+
+		int key = partion3(a, left , right);
+
+		if (key + 1 < right)
+		{
+			StackPush(&st, key + 1);
+			StackPush(&st, right);
+		}
+
+		if (left < key - 1)
+		{
+			StackPush(&st, left);
+			StackPush(&st, key - 1);
+		}
+	}
+
+	StackDestroy(&st);
+}
 
 // 归并排序非递归
 void MergeSortNonR(int* a, int n)

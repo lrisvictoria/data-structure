@@ -120,10 +120,11 @@ void TestBubbleSort()
 
 void TestQuickSort()
 {
-	int arr[] = { 9,8,7,6,5,4,3,2,1 };
+	int arr[] = { 6, 1, 2, 7, 9, 3, 4, 5, 10, 8 };
 	int sz = sizeof(arr) / sizeof(arr[0]);
 
-	QuickSort(arr, 0, sz - 1);
+	//QuickSort(arr, 0, sz - 1);
+	QuickSortNorR(arr, 0, sz - 1);
 
 	PrintArray(arr, sz);
 }
