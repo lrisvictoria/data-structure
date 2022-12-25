@@ -336,6 +336,9 @@ int partion2(int* a, int begin, int end)
 
 int partion3(int* a, int begin, int end)
 {
+	int mid = GetIndexMid(a, begin, end);
+	Swap(&a[begin], &a[mid]);
+
 	int prev = begin;
 	int cur = begin + 1;
 	int key = begin;
@@ -509,6 +512,7 @@ void _MergeSort(int* a, int begin, int end, int* tmp)
 	* cnt 最终的长度就是 [begin, end] 之间的长度
 	* 没问题
 	*/
+
 	int cnt = 0; 
 
 	while (begin1 <= end1 && begin2 <= end2)
@@ -546,7 +550,66 @@ void MergeSort(int* a, int n)
 	_MergeSort(a, 0, n - 1, tmp);
 }
 
-// 归并排序非递归
+// 归并排序非递归 - 不修正区间
+//void MergeSortNonR(int* a, int n)
+//{
+//	int* tmp = (int*)malloc(sizeof(int) * n);
+//	if (tmp == NULL)
+//	{
+//		perror("malloc fail");
+//		exit(-1);
+//	}
+//
+//	int rangeN = 1;
+//	while (rangeN < n)
+//	{
+//		for (int i = 0; i < n; i += 2 * rangeN)
+//		{
+//			int begin1 = i, end1 = i + rangeN - 1;
+//			int begin2 = i + rangeN, end2 = i + 2 * rangeN - 1;
+//
+//			int j = i;
+//
+//			if (end1 >= n)
+//			{
+//				break;
+//			}
+//			else if (begin2 >= n)
+//			{
+//				break;
+//			}
+//			else if (end2 >= n)
+//			{
+//				end2 = n - 1;
+//				//break;
+//			}
+//
+//			while (begin1 <= end1 && begin2 <= end2)
+//			{
+//				// 保持稳定性
+//				if (a[begin1] <= a[begin2])
+//				{
+//					tmp[j++] = a[begin1++];
+//				}
+//				else
+//				{
+//					tmp[j++] = a[begin2++];
+//				}
+//			}
+//
+//			while (begin1 <= end1) tmp[j++] = a[begin1++];
+//			while (begin2 <= end2) tmp[j++] = a[begin2++];
+//
+//			memcpy(a + i, tmp + i, sizeof(int) * (end2 - i + 1));
+//		}
+//		rangeN *= 2;
+//	}
+//
+//	free(tmp);
+//	tmp = NULL;
+//}
+
+// 归并非递归 - 修正区间
 void MergeSortNonR(int* a, int n)
 {
 	int* tmp = (int*)malloc(sizeof(int) * n);
@@ -557,13 +620,58 @@ void MergeSortNonR(int* a, int n)
 	}
 
 	int rangeN = 1;
-	for (int i = 0; i < n; i += rangeN)
+
+	while (rangeN < n)
 	{
-		int begin1 = i, end1 = i + rangeN - 1;
-		int begin2 = i + rangeN, end2 = i + 2 * rangeN - 1;
+		for (int i = 0; i < n; i += 2 * rangeN)
+		{
+			int begin1 = i, end1 = i + rangeN - 1;
+			int begin2 = i + rangeN, end2 = i + 2 * rangeN - 1;
 
-		int j = i;
-		
+			int j = i;
+			// 修正区间
+			if (end1 >= n)
+			{
+				end1 = n - 1;
+				// begin2 和 end2 修正为不存在的区间
+				begin2 = n;
+				end2 = n - 1;
+			}
+			else if (begin2 >= n)
+			{
+				begin2 = n;
+				end2 = n - 1;
+			}		
+			else if (end2 >= n)
+			{
+				end2 = n - 1;
+			}
 
+			while (begin1 <= end1 && begin2 <= end2)
+			{
+				if (a[begin1] <= a[begin2])
+				{
+					tmp[j++] = a[begin1++];
+				}
+				else
+				{
+					tmp[j++] = a[begin2++];
+				}
+			}
+			while (begin1 <= end1)
+			{
+				tmp[j++] = a[begin1++];
+			}
+			while (begin2 <= end2)
+			{
+				tmp[j++] = a[begin2++];
+			}
+			// 可以局部拷贝
+			//memcpy(a + i, tmp + i, sizeof(int) * (end2 - i + 1));
+		}
+		memcpy(a, tmp, sizeof(int) * n);
+		rangeN *= 2;
 	}
+	free(tmp);
+	tmp = NULL;
 }

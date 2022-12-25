@@ -43,6 +43,7 @@ void TestOP()
 		a4[i] = a1[i];
 		a5[i] = a1[i];
 		a6[i] = a1[i];
+		a7[i] = a1[i];
 	}
 
 	// clock 获取程序运行到这块的时间
@@ -66,7 +67,7 @@ void TestOP()
 	int end4 = clock();
 
 	int begin5 = clock();
-	QuickSort(a5, 0, N - 1);
+	QuickSortNorR(a5, 0, N - 1);
 	int end5 = clock();
 
 	int begin6 = clock();
@@ -74,7 +75,8 @@ void TestOP()
 	int end6 = clock();
 
 	int begin7 = clock();
-	MergeSort(a7, N);
+	//MergeSort(a7, N);
+	MergeSortNonR(a7, N);
 	int end7 = clock();
 
 	printf("InsertSort:%d\n", end1 - begin1);
@@ -91,6 +93,7 @@ void TestOP()
 	free(a4);
 	free(a5);
 	free(a6);
+	free(a7);
 }
 
 void TestHeapSort()
@@ -145,6 +148,16 @@ void TestMergeSort()
 	PrintArray(arr, sz);
 }
 
+void TestMergeSortnonR()
+{
+	int arr[] = { 6, 1, 2, 7, 9, 3, 4, 5, 10, 8 };
+	int sz = sizeof(arr) / sizeof(arr[0]);
+
+	MergeSortNonR(arr, sz);
+
+	PrintArray(arr, sz);
+}
+
 int main()
 {
 	//TestInsertSort();
@@ -154,6 +167,7 @@ int main()
 	//TestBubbleSort();
 	//TestQuickSort();
 	//TestMergeSort();
+	//TestMergeSortnonR();
 
 	TestOP();
 
