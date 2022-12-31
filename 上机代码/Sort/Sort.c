@@ -51,25 +51,25 @@ void ShellSort(int* a, int n)
 	//	for (int j = 0; j < gap; j++)
 	//	{
 	//		// 对于单组
-	//		for (int i = j; i < n - gap; i += gap)
-	//		{
-	//			// 对于单个元素
-	//			int end = i;
-	//			int tmp = a[end + gap];
-	//			while (end >= 0)
-	//			{
-	//				if (tmp < a[end])
-	//				{
-	//					a[end + gap] = a[end];
-	//					end -= gap;
-	//				}
-	//				else
-	//				{
-	//					break;
-	//				}
-	//			}
-	//			a[end + gap] = tmp;
-	//		}
+			//for (int i = j; i < n - gap; i += gap)
+			//{
+			//	// 对于单个元素
+			//	int end = i;
+			//	int tmp = a[end + gap];
+			//	while (end >= 0)
+			//	{
+			//		if (tmp < a[end])
+			//		{
+			//			a[end + gap] = a[end];
+			//			end -= gap;
+			//		}
+			//		else
+			//		{
+			//			break;
+			//		}
+			//	}
+			//	a[end + gap] = tmp;
+			//}
 	//	}
 		//PrintArray(a, n);
 	//}
@@ -79,7 +79,7 @@ void ShellSort(int* a, int n)
 	while (gap > 1)
 	{
 		gap = gap / 3 + 1;
-
+		//gap /= 2;
 		// 三组并排
 		for (int i = 0; i < n - gap; i++)
 		{
@@ -298,9 +298,9 @@ int partion1(int* a, int begin, int end)
 // 挖坑法
 int partion2(int* a, int begin, int end)
 {
-	int mid = GetIndexMid(a, begin, end);
+	//int mid = GetIndexMid(a, begin, end);
 
-	Swap(&a[begin], &a[mid]);
+	//Swap(&a[begin], &a[mid]);
 
 	int left = begin, right = end;
 	int key = a[left];
@@ -383,12 +383,59 @@ void QuickSort(int* a, int begin, int end)
 	}
 	else
 	{
-		int key = partion3(a, begin, end);
+		int key = partion2(a, begin, end);
 		// 递归左右区间
 		QuickSort(a, begin, key - 1);
 		QuickSort(a, key + 1, end);
 	}
 }
+
+// 三路划分 处理重复数据量大的情况，处理完中间区间就是 22222222222
+void QuickSortT(int* a, int begin, int end)
+{
+	if (begin >= end)
+	{
+		return;
+	}
+
+	int mid = GetIndexMid(a, begin, end);
+	Swap(&a[mid], &a[begin]);
+
+	int left = begin, right = end;
+	int cur = begin + 1;
+	int key = a[left];
+
+	// 跟 key 相等的值，往后推
+	// 比 key 小的甩到左边
+	// 比 key 大的甩到右边
+	// 和 key 相等的就在中间
+	while (cur <= right)
+	{
+		if (a[cur] < key)
+		{
+			Swap(&a[cur], &a[left]);
+			left++;
+			cur++;
+		}
+		else if (a[cur] > key) //	
+		{
+			// r 这个位置有可能比 Key 大，也有可能比 key 小
+			// 所以 cur 不 ++ 
+			// 如果 cur 比 key 大，之后还是得换回去处理
+			Swap(&a[cur], &a[right]);
+			right--;
+		}
+		else
+		{
+			cur++;
+		}
+	}
+
+	// 区间被划分为 [begin, left - 1] [left, right] [right + 1, end]
+	QuickSortT(a, begin, left - 1);
+	QuickSortT(a, right + 1, end);
+}
+
 
 // 快排
 //void QuickSort(int* a, int begin, int end)
@@ -674,4 +721,48 @@ void MergeSortNonR(int* a, int n)
 	}
 	free(tmp);
 	tmp = NULL;
+}
+
+// 计数排序 正负数都可以排
+void CountSort(int* a, int n)
+{
+	// 1. 找最小值和最大值
+	int max = a[0], min = a[0];
+
+	for (int i = 0; i < n; i++)
+	{
+		if (a[i] > max)
+		{
+			max = a[i];
+		}
+		if (a[i] < min)
+		{
+			min = a[i];
+		}
+	}
+
+	// 2. 根据差值构建 count 数组
+	int range = max - min + 1;
+	int* count = (int*)malloc(sizeof(int) * range);
+	if (count == NULL)
+	{
+		perror("malloc fail");
+		exit(-1);
+	}
+	memset(count, 0, sizeof(int) * range);
+
+	// 3. 将值映射到count数组中
+	for (int i = 0; i < n; i++)
+	{
+		count[a[i] - min]++;
+	}
+
+	int cnt = 0;
+	for (int i = 0; i < range; i++)
+	{
+		while (count[i]--)
+		{
+			a[cnt++] = i + min;
+		}
+	}
 }

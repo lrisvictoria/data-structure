@@ -67,7 +67,7 @@ void TestOP()
 	int end4 = clock();
 
 	int begin5 = clock();
-	QuickSortNorR(a5, 0, N - 1);
+	QuickSortT(a5, 0, N - 1);
 	int end5 = clock();
 
 	int begin6 = clock();
@@ -132,8 +132,8 @@ void TestQuickSort()
 	int arr[] = { 6, 1, 2, 7, 9, 3, 4, 5, 10, 8 };
 	int sz = sizeof(arr) / sizeof(arr[0]);
 
-	//QuickSort(arr, 0, sz - 1);
-	QuickSortNorR(arr, 0, sz - 1);
+	QuickSort(arr, 0, sz - 1);
+	//QuickSortT(arr, 0, sz - 1);
 
 	PrintArray(arr, sz);
 }
@@ -158,6 +158,16 @@ void TestMergeSortnonR()
 	PrintArray(arr, sz);
 }
 
+void TestCountSort()
+{
+	int arr[] = { 6, 1, 2, 7, 9, 3, 4, 5, 10, 8 };
+	int sz = sizeof(arr) / sizeof(arr[0]);
+
+	CountSort(arr, sz);
+
+	PrintArray(arr, sz);
+}
+
 int main()
 {
 	//TestInsertSort();
@@ -165,11 +175,12 @@ int main()
 	//TestHeapSort();
 	//TestSelectSort();
 	//TestBubbleSort();
-	//TestQuickSort();
+	TestQuickSort();
 	//TestMergeSort();
 	//TestMergeSortnonR();
+	//TestCountSort();
 
-	TestOP();
+	//TestOP();
 
 
 	return 0;
